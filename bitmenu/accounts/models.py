@@ -10,7 +10,5 @@ class CustomUserManager(UserManager):
 
 class CustomUser(AbstractUser):
     objects = CustomUserManager()
-
     slug = models.SlugField(blank=True, null=False)
     email = models.EmailField(unique=True, blank=False)
-

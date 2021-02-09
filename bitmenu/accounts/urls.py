@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import FirstView
+from .views import *
 
 app_name = 'accounts'
 
 urlpatterns = [
-    path('', FirstView.as_view(), name='first')
+    path('login/', CustomLoginView.as_view(), name='login')
 ]

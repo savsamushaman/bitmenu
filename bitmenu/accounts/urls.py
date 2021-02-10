@@ -11,5 +11,9 @@ urlpatterns = [
     path('reg_mail_sent/', RegMailSentView.as_view(), name='r_mail_sent'),
     path('activate/<uidb64>/<token>/', activate_user, name="activate"),
     path('email_confirmed/', EmailConfirmedView.as_view(), name='email_confirmed'),
+    path('password_reset/', CustomPasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('password_reset/<uidb64>/<token>/', CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password_reset/complete/', CustomPasswordResetComplete.as_view(), name='password_reset_complete'),
 
 ]

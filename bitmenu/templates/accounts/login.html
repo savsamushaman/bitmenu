@@ -9,7 +9,7 @@
     Login to Bitmenu
 {% endblock title %}
 
-{% block contet %}
+{% block content %}
     <section class="u-clearfix u-palette-3-base u-section-1" id="carousel_7a62">
         <div class="u-clearfix u-sheet u-sheet-1">
             <div class="u-align-left u-container-style u-expanded-width-xs u-group u-white u-group-1">
@@ -44,7 +44,7 @@
                     {% endif %}
                     <p class="u-custom-font u-font-roboto u-text u-text-3">
                         <a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-base u-btn-2"
-                           href="https://nicepage.com">I forgot my password</a>
+                           href="{% url 'accounts:password_reset' %}">I forgot my password</a>
                     </p>
                 </div>
             </div>
@@ -68,4 +68,4 @@
 </g></svg></span>
         </div>
     </section>
-{% endblock contet %}
+{% endblock content %}

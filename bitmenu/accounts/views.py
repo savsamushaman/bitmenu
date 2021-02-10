@@ -1,17 +1,17 @@
 from django.contrib import messages
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import TemplateView, CreateView
 
-from .forms import LoginForm, RegisterUserForm
-from django.shortcuts import render, redirect
-
+from .forms import LoginForm, RegisterUserForm, CustomPassRecMailForm, CustomSetPassForm
 from .models import CustomUser
 from .token import account_activation_token
 
@@ -83,3 +83,24 @@ class RegMailSentView(TemplateView):
 
 class EmailConfirmedView(TemplateView):
     template_name = 'accounts/email_confirmed.html'
+
+
+class CustomPasswordResetView(auth_views.PasswordResetView):
+    template_name = 'accounts/password_reset.html'
+    success_url = reverse_lazy('accounts:password_reset_done')
+    email_template_name = 'accounts/password_reset_mail.html'
+    form_class = CustomPassRecMailForm
+
+
+class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'
+
+
+class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_form.html'
+    success_url = reverse_lazy('accounts:password_reset_complete')
+    form_class = CustomSetPassForm
+
+
+class CustomPasswordResetComplete(auth_views.PasswordResetCompleteView):
+    template_name = 'accounts/password_reset_complete.html'

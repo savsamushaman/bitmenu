@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block pagecss %}
+    {% static 'np/email_confirmed.css' %}
+{% endblock pagecss %}
+
+{% block title %}
+    Confirmation successful
+{% endblock title %}
+
+{% block contet %}
+    <section class="u-clearfix u-palette-3-base u-section-1" id="sec-9d7d">
+        <div class="u-clearfix u-sheet u-sheet-1">
+            <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
+                <div class="u-layout">
+                    <div class="u-layout-row">
+                        <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-1">
+                            <div class="u-container-layout u-container-layout-1">
+                                <img class="u-align-center u-expanded-width-md u-image u-image-1"
+                                     src="{% static 'np/images/g10e0e7386c685799bff28f47e4fbc6180fdce258b270ae9a17685a3f96084c7e4a0842a272fef3c3bef233ebc01b3cd6_1280.png' %}"
+                                     data-image-width="1280" data-image-height="1266">
+                            </div>
+                        </div>
+                        <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
+                            <div class="u-container-layout u-valign-middle u-container-layout-2">
+                                <h1 class="u-align-center u-text u-text-1">Successful registration</h1>
+                                <a href="{% url 'accounts:login' %}"><p class="u-align-center u-text u-text-2">You can
+                                    log
+                                    in now.</p></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

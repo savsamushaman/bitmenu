@@ -1,4 +1,5 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm, \
+    PasswordChangeForm
 from django import forms
 
 from accounts.models import CustomUser
@@ -64,3 +65,21 @@ class CustomSetPassForm(SetPasswordForm):
     new_password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': class_string_res_pass,
                                           }), required=True)
+
+
+class ChangePasswordForm(PasswordChangeForm):
+    class_string_cp = 'u-border-2 u-border-black u-border-no-left u-border-no-right ' \
+                      'u-border-no-top u-input u-input-rectangle u-white'
+
+    class Meta:
+        model = CustomUser
+        fields = ["old_password", 'new_password1', 'new_password2']
+
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Old password', 'class': class_string_cp, 'autofocus': 'autofocus'}), required=True)
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'New password', 'class': class_string_cp, }), required=True)
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'placeholder': 'New password again', 'class': class_string_cp, }),
+        required=True)

@@ -39,8 +39,9 @@
 .u-section-1 .u-group-1 {
   width: 570px;
   background-image: none;
-  min-height: 191px;
-  margin: 41px auto 60px;
+  min-height: 224px;
+  height: auto;
+  margin: 33px auto 60px;
 }
 
 .u-section-1 .u-container-layout-2 {
@@ -64,6 +65,11 @@
   font-weight: 700;
   text-transform: uppercase;
   margin: -61px 10px 0 auto;
+}
+
+.u-section-1 .u-text-1 {
+  width: 105px;
+  margin: 10px auto 0;
 }
 
 @media (max-width: 1199px) {
@@ -113,7 +119,7 @@
   }
 
   .u-section-1 .u-group-1 {
-    margin-top: 41px;
+    margin-top: 33px;
     margin-right: initial;
     margin-left: initial;
     width: auto;

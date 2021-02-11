@@ -78,6 +78,11 @@
   margin: -61px 10px 0 auto;
 }
 
+.u-section-1 .u-text-1 {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 @media (max-width: 1199px) {
   .u-section-1 .u-sheet-1 {
     min-height: 853px;

@@ -71,6 +71,11 @@
   text-transform: uppercase;
 }
 
+.u-section-1 .u-text-1 {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 @media (max-width: 1199px) {
   .u-section-1 .u-list-1 {
     height: auto;

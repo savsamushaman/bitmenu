@@ -1,13 +1,14 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db import IntegrityError
 from django.http import HttpResponseForbidden
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView, ListView, UpdateView
 from django.views import View
+from django.views.generic import TemplateView, CreateView, ListView, UpdateView
 
-from pages.forms import CategoryForm
-from pages.models import ProductCategory
+from pages.forms import CategoryForm, ProductForm
+from pages.models import ProductCategory, Product
 
 
 def check_permission(self, request, model):
@@ -28,6 +29,8 @@ class MainMenuView(LoginRequiredMixin, TemplateView):
     template_name = 'pages/main_menu.html'
 
 
+# -- Categories
+
 class CreateCategoryView(LoginRequiredMixin, CreateView):
     template_name = 'pages/create_cat.html'
     model = ProductCategory
@@ -36,7 +39,13 @@ class CreateCategoryView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.belongs_to = self.request.user
-        messages.add_message(self.request, messages.INFO, f'{form.instance.name} was created successfully')
+        try:
+            form.instance.save()
+            messages.add_message(self.request, messages.INFO, f'{form.instance.name} was created successfully')
+        except IntegrityError:
+            form.add_error('name', 'Category already exists')
+            messages.add_message(self.request, messages.INFO, f'{form.instance.name} already exists')
+            return super(CreateCategoryView, self).get(self.request, self.args, self.kwargs)
         return super().form_valid(form)
 
 
@@ -45,13 +54,11 @@ class CategoryListView(LoginRequiredMixin, ListView):
     context_object_name = 'categories'
     template_name = 'pages/cat_list.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(CategoryListView, self).get_context_data(**kwargs)
-        context['categories'] = ProductCategory.objects.filter(belongs_to=self.request.user)
-        return context
+    def get_queryset(self):
+        return ProductCategory.objects.filter(belongs_to=self.request.user)
 
 
-class CategoryUpdateView(LoginRequiredMixin, UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = ProductCategory
     template_name = 'pages/edit_cat.html'
     context_object_name = 'category'
@@ -62,12 +69,70 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
         messages.add_message(self.request, messages.INFO, f'Success !')
         return reverse_lazy('pages:update_cat', kwargs={'pk': pk})
 
+    def test_func(self):
+        return self.get_object().belongs_to == self.request.user
+
 
 class CategoryDelete(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        permission_and_object = check_permission(self, request, ProductCategory)
-        if permission_and_object[0]:
-            permission_and_object[1].delete()
+        permission, model_object = check_permission(self, request, ProductCategory)
+        if permission:
+            model_object.delete()
             return redirect('pages:cat_list')
         return HttpResponseForbidden()
+
+
+# -- Products
+
+class CreateProductView(LoginRequiredMixin, CreateView):
+    template_name = 'pages/create_product.html'
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('pages:create_prod')
+
+    def form_valid(self, form):
+        form.instance.belongs_to = self.request.user
+        try:
+            form.instance.save()
+            messages.add_message(self.request, messages.INFO, f'{form.instance.name} was created successfully')
+        except IntegrityError:
+            form.add_error('name', 'Product already exists')
+            messages.add_message(self.request, messages.INFO, f'{form.instance.name} already exists')
+            return super(CreateProductView, self).get(self.request, self.args, self.kwargs)
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateProductView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+
+class ProductListView(LoginRequiredMixin, ListView):
+    model = Product
+    context_object_name = 'products'
+    template_name = 'pages/product_list.html'
+
+    def get_queryset(self):
+        return Product.objects.filter(belongs_to=self.request.user)
+
+
+# The form needs further improvement --> category is set to null when page is loaded
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Product
+    template_name = 'pages/edit_product.html'
+    context_object_name = 'product'
+    form_class = ProductForm
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        messages.add_message(self.request, messages.INFO, f'Success !')
+        return reverse_lazy('pages:update_prod', kwargs={'pk': pk})
+
+    def test_func(self):
+        return self.get_object().belongs_to == self.request.user
+
+    def get_form_kwargs(self):
+        kwargs = super(ProductUpdateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs

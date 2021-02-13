@@ -2,11 +2,12 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db import IntegrityError
 from django.http import HttpResponseForbidden
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView
 
+from accounts.models import CustomUser
 from pages.forms import CategoryForm, ProductForm
 from pages.models import ProductCategory, Product
 
@@ -147,3 +148,20 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class ProductDelete(CustomDelView):
     model = Product
     url = 'pages:prod_list'
+
+
+# -- Menu
+
+class MenuPageView(TemplateView):
+    template_name = 'pages/menu_page.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MenuPageView, self).get_context_data(**kwargs)
+
+        user_slug = kwargs.pop('userslug')
+        user = get_object_or_404(CustomUser, slug=user_slug)
+
+        context['categories'] = ProductCategory.objects.filter(belongs_to=user)
+        context['products'] = Product.objects.filter(belongs_to=user, available=True)
+        context['username'] = user.username
+        return context

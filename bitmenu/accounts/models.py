@@ -1,5 +1,6 @@
 from django.contrib.auth.models import UserManager, AbstractUser
 from django.db import models
+from django.utils.text import slugify
 
 
 class CustomUserManager(UserManager):
@@ -12,3 +13,7 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
     slug = models.SlugField(blank=True, null=False)
     email = models.EmailField(unique=True, blank=False)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.username)
+        super(CustomUser, self).save(*args, **kwargs)

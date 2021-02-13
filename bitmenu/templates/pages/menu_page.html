@@ -1,0 +1,57 @@
+{% extends 'base_for_menu.html' %}
+{% load static %}
+
+{% block title %}Menu - {{ username }}{% endblock title %}
+
+{% block topbar %}
+{% endblock topbar %}
+
+
+{% block headspace %}
+    <link href="{% static 'Ry/menu_page.css' %}" rel="stylesheet">
+{% endblock headspace %}
+
+
+
+{% block content %}
+    <!-- ======= Menu Section ======= -->
+    <section id="menu" class="menu section-bg">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title" data-aos="fade-up">
+                <h2><a href=""></a>Menu - {{ username }}</h2>
+                <br>
+            </div>
+
+            <div class="row" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-lg-12 d-flex justify-content-center">
+                    <ul id="menu-flters">
+                        <li data-filter="*" class="filter-active">All</li>
+                        {% for category in categories %}
+                            <li data-filter=".filter-{{ category.slug }}">{{ category.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row menu-container" data-aos="fade-up" data-aos-delay="200">
+                {% for product in products %}
+                    <div class="col-lg-6 menu-item filter-{{ product.category.slug }}">
+                        <img src="{% static 'Ry/dish.png' %}" class="menu-img" alt="">
+                        <div class="menu-content">
+                            <a>{{ product.name }}</a><span>{{ product.price }}</span>
+                        </div>
+                        <div class="menu-ingredients">
+                            {% if product.description %} {{ product.description }} {% else %} <br> {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section><!-- End Menu Section -->
+
+
+{% endblock content %}
+
+{% block footer %}
+{% endblock footer %}
+

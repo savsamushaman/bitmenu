@@ -29,6 +29,18 @@ class MainMenuView(LoginRequiredMixin, TemplateView):
     template_name = 'pages/main_menu.html'
 
 
+class CustomDelView(LoginRequiredMixin, View):
+    model = None
+    url = None
+
+    def get(self, request, *args, **kwargs):
+        permission, model_object = check_permission(self, request, self.model)
+        if permission:
+            model_object.delete()
+            return redirect(self.url)
+        return HttpResponseForbidden()
+
+
 # -- Categories
 
 class CreateCategoryView(LoginRequiredMixin, CreateView):
@@ -73,14 +85,9 @@ class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return self.get_object().belongs_to == self.request.user
 
 
-class CategoryDelete(LoginRequiredMixin, View):
-
-    def get(self, request, *args, **kwargs):
-        permission, model_object = check_permission(self, request, ProductCategory)
-        if permission:
-            model_object.delete()
-            return redirect('pages:cat_list')
-        return HttpResponseForbidden()
+class CategoryDelete(CustomDelView):
+    model = ProductCategory
+    url = 'pages:cat_list'
 
 
 # -- Products
@@ -117,7 +124,6 @@ class ProductListView(LoginRequiredMixin, ListView):
         return Product.objects.filter(belongs_to=self.request.user)
 
 
-# The form needs further improvement --> category is set to null when page is loaded
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     template_name = 'pages/edit_product.html'
@@ -136,3 +142,8 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         kwargs = super(ProductUpdateView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+
+class ProductDelete(CustomDelView):
+    model = Product
+    url = 'pages:prod_list'

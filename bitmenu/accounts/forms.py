@@ -1,6 +1,6 @@
+from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm, SetPasswordForm, \
     PasswordChangeForm
-from django import forms
 
 from accounts.models import CustomUser
 
@@ -44,6 +44,13 @@ class RegisterUserForm(UserCreationForm):
         if username and CustomUser.objects.filter(username__iexact=username).exists():
             self.add_error('username', 'A user with that username already exists.')
         return cleaned_data
+
+
+class RegisterUserFormAdmin(UserCreationForm):
+    class Meta:
+        model = CustomUser
+        fields = '__all__'
+        exclude = ['first_name', 'last_name']
 
 
 class CustomPassRecMailForm(PasswordResetForm):

@@ -102,7 +102,8 @@
 </g><g><g><path d="M486.12,263.617c-4.306-55.231-28.042-106.556-67.802-145.881c-38.34-37.92-87.683-60.811-140.745-65.705    c5.509-5.516,8.915-13.131,8.915-21.543C286.488,13.651,272.839,0,256,0s-30.488,13.651-30.488,30.488    c0,8.411,3.406,16.027,8.915,21.543c-53.062,4.894-102.403,27.785-140.744,65.705c-39.761,39.325-63.497,90.65-67.803,145.881H0    v31.347h24.985h27.26v21.937l71.468,35.616L300.457,379.9l0.61,0.083c0.059,0.006,6.154,0.868,11.959,4.104    c8.651,4.822,9.76,11.046,9.76,15.928v7.078h-18.62V512h177.445V407.094h-23.941v-81.984l-30.617-30.146h59.96H512v-31.347H486.12    z M304.984,348.88l-171.652-26.594l-49.74-24.787v-2.535h298.784l43.948,43.272v68.857h-72.19v-7.078    C354.135,364.268,322.183,350.98,304.984,348.88z M450.265,439.016v41.637H335.515v-41.637H450.265z M395.219,263.617H57.338    C66.645,162.326,152.635,82.377,256,82.377s189.355,79.949,198.662,181.241H395.219z"></path>
 </g>
 </g></svg></span>
-                        <a href="{% url 'pages:menu_page' userslug=user.slug  %}" target="_blank" rel="noopener noreferrer"
+                        <a href="{% url 'pages:menu_page' userslug=user.slug %}" target="_blank"
+                           rel="noopener noreferrer"
                            class="u-active-none u-border-2 u-border-active-black u-border-hover-palette-3-base u-border-palette-3-base u-btn u-button-style u-hover-none u-none u-text-hover-palette-3-base u-text-palette-1-base u-btn-3">more</a>
                         <p class="u-custom-font u-font-playfair-display u-text u-text-3">Take a look at the preview of
                             your
@@ -121,8 +122,8 @@
                             xml:space="preserve" class="u-svg-content" viewBox="0 0 512 512" id="svg-01e5"><g><path d="m0 456.66c0 30.51 24.83 55.34 55.34 55.34h401.32c30.51 0 55.34-24.83 55.34-55.34v-185.66h-512zm341.64-56.66h47.58c6.49 0 11.78-5.29 11.78-11.78v-47.58c0-19.843 30-19.85 30 0v47.58c0 23.04-18.74 41.78-41.78 41.78h-47.58c-19.844 0-19.85-30 0-30zm-260.64-59.36c0-19.843 30-19.85 30 0v47.58c0 6.49 5.29 11.78 11.78 11.78h47.58c19.844 0 19.85 30 0 30h-47.58c-23.04 0-41.78-18.74-41.78-41.78z"></path><path
                             d="m456.66 0c-105.419 0 236.053 0-401.32 0-30.51 0-55.34 24.83-55.34 55.34v185.66h512v-185.66c0-30.51-24.83-55.34-55.34-55.34zm-286.3 110h-47.58c-6.49 0-11.78 5.29-11.78 11.78v47.58c0 19.843-30 19.85-30 0v-47.58c0-23.04 18.74-41.78 41.78-41.78h47.58c19.844 0 19.85 30 0 30zm260.64 59.36c0 19.843-30 19.85-30 0v-47.58c0-6.49-5.29-11.78-11.78-11.78h-47.58c-19.844 0-19.85-30 0-30h47.58c23.04 0 41.78 18.74 41.78 41.78z"></path>
 </g></svg></span>
-                        <a href="#"
-                           class="u-active-none u-border-2 u-border-active-black u-border-hover-palette-3-base u-border-palette-3-base u-btn u-button-style u-hover-none u-none u-text-hover-palette-3-base u-text-palette-1-base u-btn-4">more</a>
+                        <a download href="{{ user.qr_code.url }}"
+                           class="u-active-none u-border-2 u-border-active-black u-border-hover-palette-3-base u-border-palette-3-base u-btn u-button-style u-hover-none u-none u-text-hover-palette-3-base u-text-palette-1-base u-btn-4">Get</a>
                         <p class="u-custom-font u-font-playfair-display u-text u-text-4">Get QR code</p>
                     </div>
                 </div>

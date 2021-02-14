@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
     slug = models.SlugField(blank=True, null=False)
     email = models.EmailField(unique=True, blank=False)
+    qr_code = models.ImageField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.username)

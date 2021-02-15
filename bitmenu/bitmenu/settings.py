@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     # custom apps
     'accounts.apps.AccountsConfig',
     'pages.apps.PagesConfig',
-    'api.apps.ApiConfig'
+    'api.apps.ApiConfig',
     # frameworks
-    'rest_framework'
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

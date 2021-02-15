@@ -23,7 +23,7 @@ class ProductCategory(models.Model):
 
 
 class Product(models.Model):
-    belongs_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
+    belongs_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='products', blank=True, null=True)
     available = models.BooleanField(default=True)
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=500, blank=True)

@@ -22,4 +22,6 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('accounts/', include('accounts.urls', namespace='accounts')),
                   path('', include('pages.urls', namespace='pages')),
+                  path('rest-api/', include('rest_framework.urls', namespace='rest_framework')),
+                  path('api/', include('api.urls', namespace='api')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -35,6 +35,7 @@ class Product(models.Model):
             models.CheckConstraint(check=models.Q(price__gte=Decimal('0')), name='price_gt_0'),
         ]
         unique_together = ('belongs_to', 'name')
+        ordering = ['-category', 'name']
 
     def __str__(self):
         return str(self.name)

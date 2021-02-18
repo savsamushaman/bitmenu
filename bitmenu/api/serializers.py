@@ -1,19 +1,26 @@
 from rest_framework import serializers
 
 from accounts.models import CustomUser
-from pages.models import Product
+from pages.models import Product, ProductCategory
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    belongs_to = serializers.ReadOnlyField(source='belongs_to.username')
+    owner = serializers.ReadOnlyField(source='belongs_to.username')
 
     class Meta:
         model = Product
-        fields = ['name', 'available', 'description', 'price', 'category', 'belongs_to']
+        fields = ['owner', 'id', 'name', 'category', 'price', 'available', 'description', ]
 
-# class UserSerializer(serializers.ModelSerializer):
-#     products = serializers.PrimaryKeyRelatedField(many=True, queryset=Product.objects.all())
-#
-#     class Meta:
-#         model = CustomUser
-#         fields = ['id', 'username', 'products']
+
+class CategorySerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='belongs_to.username')
+
+    class Meta:
+        model = ProductCategory
+        fields = ['owner', 'name', 'id']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'id']

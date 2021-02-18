@@ -4,7 +4,7 @@ from pages.models import ProductCategory, Product
 
 
 class ProductCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'belongs_to',)
+    list_display = ('name', 'belongs_to', 'pk')
     search_fields = ('name', 'belongs_to__username')
 
 

@@ -25,3 +25,6 @@ urlpatterns = [
                   path('rest-api/', include('rest_framework.urls', namespace='rest_framework')),
                   path('api/', include('api.urls', namespace='api')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'api.views.error_404'
+handler500 = 'api.views.error_500'

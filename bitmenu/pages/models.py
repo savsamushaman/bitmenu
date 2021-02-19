@@ -7,7 +7,7 @@ from accounts.models import CustomUser
 
 
 class ProductCategory(models.Model):
-    belongs_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    belongs_to = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='categories')
     name = models.CharField(max_length=25)
     slug = models.SlugField(blank=True)
 
@@ -16,7 +16,7 @@ class ProductCategory(models.Model):
         super(ProductCategory, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.name)
+        return f'{self.pk} - {self.name}'
 
     class Meta:
         unique_together = ('belongs_to', 'name')
@@ -38,4 +38,4 @@ class Product(models.Model):
         ordering = ['-category', 'name']
 
     def __str__(self):
-        return str(self.name)
+        return f'{self.pk} - {self.name}'

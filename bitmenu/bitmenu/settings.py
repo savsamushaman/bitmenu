@@ -140,5 +140,5 @@ DEFAULT_FROM_EMAIL = 'Bitmenu Team <noreply@bitmenu.com>'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
-    ]
+    ],
 }

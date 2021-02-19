@@ -1,11 +1,14 @@
+from django.db import IntegrityError
+from django.http import JsonResponse
 from rest_framework import generics
 from rest_framework.decorators import api_view
+from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from accounts.models import CustomUser
 from api.permissions import OwnerWritePerm, OwnsCategoryPerm
-from api.serializers import ProductSerializer, CategorySerializer, UserSerializer
+from api.serializers import ProductSerializer, CategorySerializer, UserSerializer, DetailedUserSerializer
 from pages.models import Product, ProductCategory
 
 
@@ -30,10 +33,22 @@ class OwnedArticles(generics.ListAPIView):
 class ArticleList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
-        serializer.save(belongs_to=self.request.user)
+        try:
+            serializer.save(belongs_to=self.request.user)
+        except IntegrityError as exc:
+            raise APIException(detail=exc)
+
+
+class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
+    def perform_update(self, serializer):
+        try:
+            serializer.save()
+        except IntegrityError as exc:
+            raise APIException(detail=exc)
 
 
 # Listings
+
 class UserList(generics.ListAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
@@ -52,16 +67,22 @@ class CategoryList(ArticleList):
 
 # Details
 
-class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
+class ProductDetail(ArticleDetail):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [OwnerWritePerm, OwnsCategoryPerm]
 
 
-class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
+class CategoryDetail(ArticleDetail):
     queryset = ProductCategory.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [OwnerWritePerm, ]
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = DetailedUserSerializer
+    lookup_field = 'username'
 
 
 # owned articles
@@ -74,3 +95,18 @@ class OwnedProducts(OwnedArticles):
 class OwnedCategories(OwnedArticles):
     model = ProductCategory
     serializer_class = CategorySerializer
+
+
+# exceptions
+def error_404(request, exception):
+    message = 'not found'
+    response = JsonResponse(data={'message': message, 'status_code': 404})
+    response.status_code = 404
+    return response
+
+
+def error_500(request):
+    message = 'internal error'
+    response = JsonResponse(data={'message': message, 'status_code': 500})
+    response.status_code = 500
+    return response

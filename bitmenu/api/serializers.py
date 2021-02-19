@@ -23,4 +23,13 @@ class CategorySerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username', 'id']
+        fields = ['username', 'date_joined', 'email']
+
+
+class DetailedUserSerializer(serializers.ModelSerializer):
+    products = serializers.StringRelatedField(many=True)
+    categories = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'id', 'categories', 'products', 'last_login']
